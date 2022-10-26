@@ -35,21 +35,27 @@ public class CarsRepository
 
   public Car GetCar(String id) 
   {
-    var sql = @"
-    SELECT * FROM cars WHERE id = @id;
-    ";
-    return _db.QuerySingle<Car>(sql, id);
+    var sql = @"SELECT * FROM cars where id = @id;";
+    return _db.QuerySingle<Car>(sql, new {id});
   }
 
   public Car EditCar(Car carData, String id) 
   {
-    // var sql = @"
-    // UPDATE cars SET year = "test" WHERE Id = @id;
-    // UPDATE cars SET make = "test" WHERE Id = @id;
-    // UPDATE cars SET model = "test" WHERE Id = @id;
-    // UPDATE cars SET model = "test" WHERE Id = @id;
-    // ";
-    // return _db.QuerySingle<Car>(sql);
-    return null;
+    string sql = "";
+    if (carData.Year >= 1886) {
+      sql += "UPDATE cars SET year = @Year WHERE id = @id;";
+    } if (carData.Make != null) {
+      sql += "UPDATE cars SET make = @Make WHERE id = @id;";
+    } if (carData.Model != null) {
+      sql += "UPDATE cars SET model = @Model WHERE id = @id;";
+    } if (carData.Description != null) {
+      sql += "UPDATE cars SET description = @Description WHERE id = @id;";
+    } if (carData.ImgUrl != null) {
+      sql += "UPDATE cars SET imgUrl = @ImgUrl WHERE id = @id;";
+    } if (carData.Price >= 0) {
+      sql += "UPDATE cars SET price = @Price WHERE id = @id;";
+    }
+    _db.QuerySingleOrDefault<Car>(sql, new { id, ImgUrl = carData.ImgUrl, Description = carData.Description, Model = carData.Model, Make = carData.Make, Year = carData.Year, Price = carData.Price });
+    return this.GetCar(id);
   }
 }

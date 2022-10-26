@@ -20,3 +20,5 @@ SELECT * FROM cars;
 SELECT * FROM cars WHERE id = 1;
 
 UPDATE cars SET description = "Bestest JDM Car to Exist!" WHERE Id = 1;
+
+UPDATE cars SET description = "BESTEST JDM CAR TO EXIST, NO CAP!" WHERE id = 1;
